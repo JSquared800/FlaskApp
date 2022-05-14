@@ -35,14 +35,10 @@ def func1(s):
 
 	tweets = client.search_recent_tweets(query=query, tweet_fields=['context_annotations', 'created_at'], max_results=100)
 	ss = ""
-	i = 0
 	for tweet in tweets.data:
-		if(i>5):
-			break
 		ss+=tweet.text
 		ss+=' ||| '
-		i+=1
-	
+	print(ss)
 	return PredictTweet(ss.split(" ||| "))
 def PredictTweet(tweet_array):
     counts = np.zeros(3)
@@ -60,13 +56,7 @@ def PredictTweet(tweet_array):
         raw_probas = torch.nn.Softmax(dim=-1)(model(tokenized_inputs["input_ids"], tokenized_inputs["attention_mask"]).logits)
         class_pred = torch.argmax(raw_probas, dim=-1).item()
         counts[class_pred] += 1
-    labels = 'positive', 'neutral', 'negative'
-    fig = matplotlib.figure.Figure()
-    axis = fig.add_subplot(1, 1, 1)
-    axis.bar(labels, counts)
-    output = io.BytesIO()
-    matplotlib.backends.backend_agg.FigureCanvasAgg(fig).print_png(output)
-    return Response(output.getvalue(), mimetype='image/png')
+    return f"There are {int(counts[0])} positive tweets, {int(counts[1])} neutral tweets, and {int(counts[2])} negative tweets"
 @app.route("/")
 @app.route("/home")
 def home():
