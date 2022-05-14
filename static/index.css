@@ -3,7 +3,8 @@ html,body{
     padding: 0px;
     list-style: none;
     box-sizing: border-box;
-    font-family: Tahoma, Verdana, sans-serif;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
+  Helvetica, Arial, "Lucida Grande", sans-serif;
     letter-spacing: 3px;
 }
 
@@ -13,7 +14,7 @@ html,body{
 
 .name{
     margin: auto;
-    font-family: Arial Narrow;
+    
     
 }
 .let_space{
@@ -34,6 +35,7 @@ html,body{
     grid-gap: 2vmax;
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
   Helvetica, Arial, "Lucida Grande", sans-serif;
+    
 }
 .wrapper{
     margin:auto;
@@ -44,10 +46,14 @@ html,body{
    
 .box2{
     grid-template-columns: 1fr 1fr;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
+  Helvetica, Arial, "Lucida Grande", sans-serif;
 }
   
 .box3{
     grid-template-columns: 1fr 1fr 1fr;
+    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
+  Helvetica, Arial, "Lucida Grande", sans-serif;
 } 
 
 /* element */
@@ -81,9 +87,7 @@ form{
 label{
     margin:auto;
     font-size: 1vmax;
-    
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
-    Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-family: Comic Sans MS, Comic Sans, cursive;
 }
 
 input{
