@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request
+from flask import Flask,render_template,request,Response
 import requests
 import random
 import tweepy
@@ -7,14 +7,15 @@ from transformers import Trainer, AutoModel, AutoModelForSequenceClassification,
 import torch
 from torch.utils.data import Dataset, DataLoader
 from torch.optim import Adam, AdamW
-from IPython.display import display
-from sklearn.model_selection import StratifiedKFold
-from sklearn.metrics import accuracy_score, average_precision_score, recall_score, f1_score
-import pandas as pd
 import time
 import numpy as np
 import os
+import matplotlib
+import io
 import matplotlib.pyplot as plt
+tokenizer = AutoTokenizer.from_pretrained("FlaskApp/Roberta-Large")
+model = AutoModelForSequenceClassification.from_pretrained("FlaskApp/Roberta-Large", num_labels=3)
+model.load_state_dict(torch.load("FlaskApp/fold1_modelroberta-large_epoch6.pth", map_location=torch.device('cpu')))
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
 def func1(s):
 	# Do something here
@@ -34,13 +35,38 @@ def func1(s):
 
 	tweets = client.search_recent_tweets(query=query, tweet_fields=['context_annotations', 'created_at'], max_results=100)
 	ss = ""
+	i = 0
 	for tweet in tweets.data:
+		if(i>5):
+			break
 		ss+=tweet.text
 		ss+=' ||| '
-		if len(tweet.context_annotations) > 0:
-			print(tweet.context_annotations)
-	return ss
+		i+=1
+	
+	return PredictTweet(ss.split(" ||| "))
+def PredictTweet(tweet_array):
+    counts = np.zeros(3)
+    for tweet in tweet_array:
 
+        conv_dict = {
+            0 : "positive",
+            1 : "neutral",
+            2 : "negative"
+        }
+
+        tokenized_inputs = tokenizer(tweet, max_length=100, truncation=True, padding="max_length", is_split_into_words=False)
+        tokenized_inputs["input_ids"] = torch.tensor(tokenized_inputs["input_ids"]).unsqueeze(0)
+        tokenized_inputs["attention_mask"] = torch.tensor(tokenized_inputs["attention_mask"]).unsqueeze(0)
+        raw_probas = torch.nn.Softmax(dim=-1)(model(tokenized_inputs["input_ids"], tokenized_inputs["attention_mask"]).logits)
+        class_pred = torch.argmax(raw_probas, dim=-1).item()
+        counts[class_pred] += 1
+    labels = 'positive', 'neutral', 'negative'
+    fig = matplotlib.figure.Figure()
+    axis = fig.add_subplot(1, 1, 1)
+    axis.bar(labels, counts)
+    output = io.BytesIO()
+    matplotlib.backends.backend_agg.FigureCanvasAgg(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
 @app.route("/")
 @app.route("/home")
 def home():
