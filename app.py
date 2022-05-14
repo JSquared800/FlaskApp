@@ -3,6 +3,19 @@ import requests
 import random
 import tweepy
 app = Flask(__name__)
+from transformers import Trainer, AutoModel, AutoModelForSequenceClassification, AutoTokenizer
+import torch
+from torch.utils.data import Dataset, DataLoader
+from torch.optim import Adam, AdamW
+from IPython.display import display
+from sklearn.model_selection import StratifiedKFold
+from sklearn.metrics import accuracy_score, average_precision_score, recall_score, f1_score
+import pandas as pd
+import time
+import numpy as np
+import os
+import matplotlib.pyplot as plt
+os.environ["TOKENIZERS_PARALLELISM"] = "true"
 def func1(s):
 	# Do something here
 	#l = ["23","123","134","7342589","342","23479","234"]
@@ -27,17 +40,17 @@ def func1(s):
 		if len(tweet.context_annotations) > 0:
 			print(tweet.context_annotations)
 	return ss
-	
+
 @app.route("/")
 @app.route("/home")
 def home():
 	return render_template("index.html")
-
+import time
 @app.route("/result",methods = ['POST','GET'])
 def result():
 	output = request.form.to_dict()
-	name = output["name"]
-
+	name = output["name"]	
+	time.sleep(1)
 	return render_template("index.html",name = func1(name))
 
 if __name__ == '__main__':
