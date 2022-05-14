@@ -1,0 +1,30 @@
+<html>
+	<head>
+		<meta name="viewport" content="width=device.width,initial-scale=1.0">
+		<title>FSA-T</title>
+		<link rel="icon" href="../static/twitter.ico" type="image/x-icon">
+		<link rel="stylesheet" type="text/css" href="../static/index.css">
+
+	</head>
+	<body style = "background-color: #0e2634;">
+
+		<form class = "grid" action = "/result" method = "POST" >
+			<div class="wrapper">
+				<img src="../static/FSA.png" width="200" height="200">
+			</div>
+			<center>
+				{% if name%}
+				
+				<h3 style = "color:white;"> The number was {{name}} </h3>
+				{% endif %}
+			</center>
+			<label for = "Name" style="color:white">Welcome to Financial Sentiment Analysis! Please enter a link for a tweet.</label>
+			<input type="text" name = "name" id = "name">
+			<center><input type="Submit" class = "file_submit"></center>
+
+		</form>
+
+	</body>
+
+
+</html>
