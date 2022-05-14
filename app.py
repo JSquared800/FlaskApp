@@ -14,21 +14,19 @@ def func1(s):
 	#	if ss<0 or ss>=len(l):
 	#		return
 	#return l[int(s)]
+	if(s == ""):
+		return
 	client = tweepy.Client(bearer_token='AAAAAAAAAAAAAAAAAAAAAORicgEAAAAAy%2BK6TiiRsjrMVeGz7yTjaM%2B9R%2BM%3DVk5nXSbAU9sJ9Oyd3GnuSdDe30QHSTa0drJNCmTDwq9GP0vfPK')
-	query = 'tesla'
+	query = s
 
 	tweets = client.search_recent_tweets(query=query, tweet_fields=['context_annotations', 'created_at'], max_results=100)
-	s = ""
+	ss = ""
 	for tweet in tweets.data:
-		s+=tweet.text
-		s+=' ||| '
+		ss+=tweet.text
+		ss+=' ||| '
 		if len(tweet.context_annotations) > 0:
 			print(tweet.context_annotations)
-	l = []
-	return s
-	#PARAMS = {'BEARER'}
-	#r = requests.get(url='https://api.twitter.com/2/tweets/:1525252600530100226',)
-	#return str(r.text)
+	return ss
 	
 @app.route("/")
 @app.route("/home")
