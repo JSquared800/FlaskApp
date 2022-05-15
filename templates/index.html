@@ -13,7 +13,7 @@
             </div>
         </div>
         <form class = "grid" action = "/result" method = "POST" >
-			<a href="#directions-popup" class="button">How does it work?</a>
+			<a href="#directions-popup" class="button center1" ><b>How does it work?</b></a>
             <div class="wrapper">
                 <img src="../static/FSA2.png" width="720" height="350">
 				
@@ -30,18 +30,19 @@
 					</div>
 				</div>
 				<a href="../static/model_response.txt" class="btn-1" download="model_response.txt">
-					Download
+					Download tweets	
 				</a>
-				<p>Download model response file</p>
+				<p>See some of the tweets that we analyzed.</p>
                 <h3 style = "color:rgb(0, 0, 0);"> {{name}} </h3>
 
 
 				
                 {% endif %}
             </center>
-            <label for = "Name" style="color:rgb(0, 0, 0)">Want to know the hots on your stocks(or ANY other finance topic? Input it below!</label>
+            <label for = "Name" style="color:rgb(0, 0, 0)">Want to know the hots on your stocks(or ANY other finance)? Input it below!</label>
             <input type="text" name = "name" id = "name">
             <center><input type="Submit" class = "file_submit"></center>
+            <h1></h1>
         </form>
 		
     </body>

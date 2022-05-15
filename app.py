@@ -32,34 +32,45 @@ def func1(s):
 	if(s == ""):
 		return
 	client = tweepy.Client(bearer_token='AAAAAAAAAAAAAAAAAAAAAORicgEAAAAAy%2BK6TiiRsjrMVeGz7yTjaM%2B9R%2BM%3DVk5nXSbAU9sJ9Oyd3GnuSdDe30QHSTa0drJNCmTDwq9GP0vfPK')
-	query = s + " finance"
+	query = s + " stock -is:retweet"
 
-	tweets = client.search_recent_tweets(query=query, tweet_fields=['context_annotations', 'created_at'], max_results=10)
+	tweets = client.search_recent_tweets(query=query, tweet_fields=['context_annotations', 'created_at'], max_results=100)
 	ss = ""
 	for tweet in tweets.data:
 		ss+=tweet.text
 		ss+=' ||| '
-	print(ss)
+	#print(ss)
 	return PredictTweet(ss.split(" ||| "))
 def PredictTweet(tweet_array):
-    global counts
-    counts = np.zeros(3)
-    for tweet in tweet_array:
-
-        conv_dict = {
-            0 : "positive",
-            1 : "neutral",
-            2 : "negative"
+	global counts
+	fout = open("FlaskApp/static/model_response.txt","w",encoding='utf-8')
+	counts = np.zeros(3)
+	result = ""
+	for tweet in tweet_array:
+		conv_dict = {
+			0 : "positive",
+			1 : "neutral",
+			2 : "negative"
         }
-
-        tokenized_inputs = tokenizer(tweet, max_length=10, truncation=True, padding="max_length", is_split_into_words=False)
-        tokenized_inputs["input_ids"] = torch.tensor(tokenized_inputs["input_ids"]).unsqueeze(0)
-        tokenized_inputs["attention_mask"] = torch.tensor(tokenized_inputs["attention_mask"]).unsqueeze(0)
-        raw_probas = torch.nn.Softmax(dim=-1)(model(tokenized_inputs["input_ids"], tokenized_inputs["attention_mask"]).logits)
-        class_pred = torch.argmax(raw_probas, dim=-1).item()
-        counts[class_pred] += 1
-
-    return f"{round(100*counts[0]/len(tweet_array))}% of tweets are positive, {round(100*counts[1]/len(tweet_array))}% of tweets are neutral, and {round(100*counts[2]/len(tweet_array))}% of tweets are negative,"
+		tokenized_inputs = tokenizer(tweet, max_length=100, truncation=True, padding="max_length", is_split_into_words=False)
+		tokenized_inputs["input_ids"] = torch.tensor(tokenized_inputs["input_ids"]).unsqueeze(0)
+		tokenized_inputs["attention_mask"] = torch.tensor(tokenized_inputs["attention_mask"]).unsqueeze(0)
+		raw_probas = torch.nn.Softmax(dim=-1)(model(tokenized_inputs["input_ids"], tokenized_inputs["attention_mask"]).logits)
+		class_pred = torch.argmax(raw_probas, dim=-1).item()
+		counts[class_pred] += 1
+		result+=tweet+ "| Model classified this tweet as " + conv_dict[class_pred] + '\n'
+	fout.write(result)
+	fout.close()
+	posT = round(100*counts[0]/len(tweet_array))
+	neuT = round(100*counts[1]/len(tweet_array))
+	negT = round(100*counts[2]/len(tweet_array))
+	s = f"{posT}% of tweets are positive, {neuT}% of tweets are neutral, and {negT}% of tweets are negative."
+	if(posT > negT and posT > neuT):
+		return s + " The model predicts that this stock has a bullish sentiment surrounding it. Now might be the time to invest!"
+	elif(neuT > posT and neuT > negT):
+		return s + " Market is hazy right now, hold onto your decision."
+	else:
+		return s + " The model predicts that this stock has a bearish sentiment surrounding it. It might be a good idea to wait for the stock to do its thing"
 @app.route("/")
 @app.route("/home")
 def home():
