@@ -1,31 +1,41 @@
 <html>
-	<head>
-		<meta name="viewport" content="width=device.width,initial-scale=1.0">
-		<title>FSA-T</title>
-		<link rel="icon" href="../static/twitter.ico" type="image/x-icon">
-		<link rel="stylesheet" type="text/css" href="../static/index.css">
-		
-	</head>
-	<body style = "background-color: #0e2634;">
-		
-		<form class = "grid" action = "/result" method = "POST" >
-			<div class="wrapper">
-				<img src="../static/FSA.png" width="200" height="200">
-			</div>
-			<center>
+    <head>
+        <meta name="viewport" content="width=device.width,initial-scale=1.0">
+        <title>Financial </title>
+        <link rel="icon" href="../static/twitter.ico" type="image/x-icon">
+        <link rel="stylesheet" type="text/css" href="../static/index.css">
+    </head>
+    <body style = "background-color: #ffffff;">
+
+        <form class = "grid" action = "/result" method = "POST" >
+            <div class="wrapper">
+                <img src="../static/FSA2.png" width="720" height="350">
+            </div>
+            <center> 
+
+
+                {% if name%}
+				
+                <h3 style = "color:rgb(0, 0, 0);"> {{name}} </h3>
+				<!-- Add icon library -->
+				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+				<!-- Auto width -->
+				<a href="../static/model_response.txt" download="a.txt">
+					<button class="btn"><i class="fa fa-download"></i> Download Model Response File</button>
+				</a>
+
 				
 				
-				{% if name%}
-				<h3 style = "color:white;"> {{name}} </h3>
-				{% endif %}
-			</center>
-			<label for = "Name" style="color:white">Welcome to Financial Sentiment Analysis! Please enter a topic.</label>
-			<input type="text" name = "name" id = "name">
-			<center><input type="Submit" class = "file_submit"></center>
+                {% endif %}
+            </center>
+            <label for = "Name" style="color:rgb(0, 0, 0)">Welcome to Financial Sentiment Analysis! Please enter a topic.</label>
+            <input type="text" name = "name" id = "name">
+            <center><input type="Submit" class = "file_submit"></center>
 
-		</form>
+        </form>
 
-	</body>
+    </body>
 
 
 </html>

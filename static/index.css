@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Aleo);
+
 html,body{
     margin: 0px;
     padding: 0px;
@@ -121,10 +123,11 @@ form{
 
 label{
     margin:auto;
-    font-size: 1vmax;
-    font-family: Comic Sans MS, Comic Sans, cursive;
+    font-size: 22;
+    font-family: Aleo;
+    letter-spacing: 0.3;
 }
-
+ 
 input{
     padding:1vmax;
     font-size: 1.3vmax;
@@ -144,7 +147,20 @@ option{
     font-size: 1.5vmax;
     letter-spacing: 3px;
 }
+/* Style buttons */
+.btn {
+  background-color: DodgerBlue;
+  border: none;
+  color: white;
+  padding: 12px 30px;
+  cursor: pointer;
+  font-size: 20px;
+}
 
+/* Darker background on mouse-over */
+.btn:hover {
+  background-color: RoyalBlue;
+}
 .file_submit{
   margin-top: 1vmax;
   border: 1px solid #55acee;
@@ -154,7 +170,8 @@ option{
   padding: 1vmax;
   cursor: pointer;
   transition: 0.3s;
-  letter-spacing: 3px;
+  letter-spacing: 0.3;
+  font-family: Aleo;
 }
 
 .file_submit:hover{
