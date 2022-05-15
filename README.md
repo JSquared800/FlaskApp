@@ -1,3 +1,5 @@
+300 word write-up:
+
 We live in a world where the amount of data that we have available to us is growing exponentially. Our project utilizes one form of this ever-growing data: twitter tweets to help users make better and faster decisions by understanding the sentiment surrounding various stocks and financial items through a variety of resources.
 
 Our user interface is meant to be simple yet enticing in appearance. The first thing that the user sees is a pop-up graphic that helps them understand the model and its simplicity. Once done with that, the user can input any stock/financial item and let our backend NLP model do the heavy crunching. 
