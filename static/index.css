@@ -5,8 +5,7 @@ html,body{
     padding: 0px;
     list-style: none;
     box-sizing: border-box;
-    font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
-  Helvetica, Arial, "Lucida Grande", sans-serif;
+    font-family: Aleo;
     letter-spacing: 3px;
 }
 
@@ -14,6 +13,7 @@ html,body{
 /* element */
 .row {
   display: flex;
+  
 }
 
 /* Create three equal columns that sits next to each other */
