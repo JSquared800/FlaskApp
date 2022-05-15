@@ -34,7 +34,7 @@ def func1(s):
 	client = tweepy.Client(bearer_token='AAAAAAAAAAAAAAAAAAAAAORicgEAAAAAy%2BK6TiiRsjrMVeGz7yTjaM%2B9R%2BM%3DVk5nXSbAU9sJ9Oyd3GnuSdDe30QHSTa0drJNCmTDwq9GP0vfPK')
 	query = s + " finance"
 
-	tweets = client.search_recent_tweets(query=query, tweet_fields=['context_annotations', 'created_at'], max_results=49)
+	tweets = client.search_recent_tweets(query=query, tweet_fields=['context_annotations', 'created_at'], max_results=10)
 	ss = ""
 	for tweet in tweets.data:
 		ss+=tweet.text
@@ -42,27 +42,24 @@ def func1(s):
 	print(ss)
 	return PredictTweet(ss.split(" ||| "))
 def PredictTweet(tweet_array):
-	
-	fout = open("FlaskApp/static/model_response.txt","w", encoding="utf-8")
-	counts = np.zeros(3)
-	result = ""
-	for tweet in tweet_array:
-		conv_dict = {
-			0 : "positive",
+    global counts
+    counts = np.zeros(3)
+    for tweet in tweet_array:
+
+        conv_dict = {
+            0 : "positive",
             1 : "neutral",
             2 : "negative"
         }
-		tokenized_inputs = tokenizer(tweet, max_length=49, truncation=True, padding="max_length", is_split_into_words=False)
-		tokenized_inputs["input_ids"] = torch.tensor(tokenized_inputs["input_ids"]).unsqueeze(0)
-		tokenized_inputs["attention_mask"] = torch.tensor(tokenized_inputs["attention_mask"]).unsqueeze(0)
-		raw_probas = torch.nn.Softmax(dim=-1)(model(tokenized_inputs["input_ids"], tokenized_inputs["attention_mask"]).logits)
-		class_pred = torch.argmax(raw_probas, dim=-1).item()
-		counts[class_pred] += 1
-		result += tweet
-		result += f" | Model Classified This Tweet As {conv_dict[class_pred]}\n"
-	fout.write(result)
-	fout.close()
-	return f"There are {int(counts[0])*2}% positive tweets, {int(counts[1])*2}% neutral tweets, and {int(counts[2])*2}% negative tweets"
+
+        tokenized_inputs = tokenizer(tweet, max_length=10, truncation=True, padding="max_length", is_split_into_words=False)
+        tokenized_inputs["input_ids"] = torch.tensor(tokenized_inputs["input_ids"]).unsqueeze(0)
+        tokenized_inputs["attention_mask"] = torch.tensor(tokenized_inputs["attention_mask"]).unsqueeze(0)
+        raw_probas = torch.nn.Softmax(dim=-1)(model(tokenized_inputs["input_ids"], tokenized_inputs["attention_mask"]).logits)
+        class_pred = torch.argmax(raw_probas, dim=-1).item()
+        counts[class_pred] += 1
+
+    return f"{round(100*counts[0]/len(tweet_array))}% of tweets are positive, {round(100*counts[1]/len(tweet_array))}% of tweets are neutral, and {round(100*counts[2]/len(tweet_array))}% of tweets are negative,"
 @app.route("/")
 @app.route("/home")
 def home():
@@ -72,8 +69,34 @@ import random
 from flask import Response
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
+@app.route('/plot.png')
+def plot_png():
+    fig = create_figure()
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
+@app.route('/plot1.png')
+def plot_png1():
+    fig = create_figure1()
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
 
+def create_figure():
+	fig = matplotlib.figure.Figure(figsize=(10, 5))
+	axis = fig.add_subplot(1, 1, 1)
+	xs = ["positive", "neutral", "negative"]
+	ys = counts
+	axis.bar(xs, ys)
+	return fig
+def create_figure1():
+    fig = matplotlib.figure.Figure(figsize=(10, 5))
+    axis = fig.add_subplot(1, 1, 1)
+    xs = ["positive", "neutral", "negative"]
+    ys = counts
+    axis.pie(ys, labels=xs)
 
+    return fig
 @app.route("/result",methods = ['POST','GET'])
 def result():
 	output = request.form.to_dict()

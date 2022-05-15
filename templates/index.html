@@ -6,36 +6,46 @@
         <link rel="stylesheet" type="text/css" href="../static/index.css">
     </head>
     <body style = "background-color: #ffffff;">
-
+		<div id="directions-popup" class="popup" href="#">
+            <div class="popup-content">
+                <center><img src="https://thepuzzlr.com/wp-content/uploads/2022/05/Financial-Sentiment-Dir.png" alt="directions popup" width = "500" height="670" /></center>
+                <a href="#" class="close">x</a>
+            </div>
+        </div>
         <form class = "grid" action = "/result" method = "POST" >
+			<a href="#directions-popup" class="button">How does it work?</a>
             <div class="wrapper">
                 <img src="../static/FSA2.png" width="720" height="350">
+				
             </div>
             <center> 
 
-
                 {% if name%}
-				
-                <h3 style = "color:rgb(0, 0, 0);"> {{name}} </h3>
-				<!-- Add icon library -->
-				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-				<!-- Auto width -->
-				<a href="../static/model_response.txt" download="a.txt">
-					<button class="btn"><i class="fa fa-download"></i> Download Model Response File</button>
+				<div class="row">
+					<div class="column">
+						<img src="/plot.png" width="600" height = "400">
+					</div>
+					<div class="column">
+						<img src="/plot1.png" width="780" height = "390">
+					</div>
+				</div>
+				<a href="../static/model_response.txt" class="btn-1" download="model_response.txt">
+					Download
 				</a>
+				<p>Download model response file</p>
+                <h3 style = "color:rgb(0, 0, 0);"> {{name}} </h3>
 
-				
+
 				
                 {% endif %}
             </center>
-            <label for = "Name" style="color:rgb(0, 0, 0)">Welcome to Financial Sentiment Analysis! Please enter a topic.</label>
+            <label for = "Name" style="color:rgb(0, 0, 0)">Want to know the hots on your stocks(or ANY other finance topic? Input it below!</label>
             <input type="text" name = "name" id = "name">
             <center><input type="Submit" class = "file_submit"></center>
-
         </form>
-
+		
     </body>
+	
 
 
 </html>
