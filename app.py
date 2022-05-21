@@ -23,9 +23,9 @@ app = Flask(__name__)
 ###the text, and the model is used for predicting whether a processed text is neutral, positive or negative. 
 ###We also set enviornment variables here. 
 
-tokenizer = AutoTokenizer.from_pretrained("FlaskApp/Roberta-Large")
-model = AutoModelForSequenceClassification.from_pretrained("FlaskApp/Roberta-Large", num_labels=3)
-model.load_state_dict(torch.load("FlaskApp/fold1_modelroberta-large_epoch6.pth", map_location=torch.device('cpu')))
+tokenizer = AutoTokenizer.from_pretrained("Roberta-Large")
+model = AutoModelForSequenceClassification.from_pretrained("Roberta-Large", num_labels=3)
+model.load_state_dict(torch.load("fold1_modelroberta-large_epoch6.pth", map_location=torch.device('cpu')))
 os.environ["TOKENIZERS_PARALLELISM"] = "true"
 
 ###This code uses the tweepy framework to find tweets about a certain topic (keyword), and eliminates retweets
