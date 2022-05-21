@@ -92,6 +92,7 @@ p {
     font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", 
     Helvetica, Arial, "Lucida Grande", sans-serif;
 }
+
 .button{
     border: 2px solid white;
     padding: 10px;
@@ -184,29 +185,6 @@ p {
     overflow-x: scroll;
     width: 70vw;
 }
-.LockOn {
-    display: block;
-    visibility: visible;
-    position: absolute;
-    z-index: 999;
-    top: 0px;
-    left: 0px;
-    width: 105%;
-    height: 105%;
-    background-color:black;
-    vertical-align:bottom;
-    padding-top: 20%; 
-    filter: alpha(opacity=75); 
-    opacity: 0.75; 
-    font-size:large;
-    color:black;
-    font-style:italic;
-    font-weight:400;
-    background-image: url("../Common/loadingGIF.gif");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-}
 .loader {
     border: 16px solid black; /* Light grey */
     border-top: 16px solid black; /* Blue */
@@ -215,11 +193,6 @@ p {
     height: 120px;
     animation: spin 2s linear infinite;
   }
-  
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
 table {
     border-collapse: collapse;
     letter-spacing: 3px;
@@ -277,12 +250,11 @@ option{
   font-size: 20px;
   font-family: Aleo;
 }
-
-/* Darker background on mouse-over */
 .btn:hover {
   background-color: white;
   font-family: Aleo;
 }
+
 .file_submit{
   margin-top: 1vmax;
   border: 1px solid #55acee;
